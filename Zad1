@@ -1,0 +1,39 @@
+/*
+ Kombinacija funkcionalnosti svetlecih dioda i tastera na Tiva razvojnoj plocici
+
+Opis zadatka:
+Implementirati program koji omogucava sledece funkcionalnosti na Tiva razvojnoj plocici:
+
+Kada se pritisne taster, sve tri svetlece diode treba da trepcu sinhronizovano.
+Kada se taster otpusti, treptanje svetlecih dioda treba da se zaustavi.
+ */
+
+
+#include "helper_library/helper.h"
+
+
+int main(void)
+{
+    bool button_pressed;
+
+    helper_library_init();
+
+    while(1)
+    {
+
+        button_pressed = read_user_switch1();
+
+
+        if(button_pressed)
+        {
+            turn_on_red_led();
+            turn_on_blue_led();
+            turn_on_green_led();
+            delay(500);
+            turn_off_red_led();
+            turn_off_blue_led();
+            turn_off_green_led();
+            delay(500);
+        }
+    }
+}

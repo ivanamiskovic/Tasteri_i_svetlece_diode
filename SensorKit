@@ -1,0 +1,55 @@
+#include "helper_library/helper.h"
+/*Napravite program koji kontrolise svetlece diode na Tivi i Sensor Kit-u. Program treba da ispuni sledece funkcionalnosti:
+
+ Kada je pritisnut taster na Sensor Kit-u, crvena svetleca dioda na Sensor Kit-u sija. Ako taster nije pritisnut, svetleca dioda ostaje ugasena.
+
+ Kada je pritisnut levi taster Tive, crvena svetleca dioda na Sensor Kit-u trepti sa brzim ritmom.
+
+ Kada je pritisnut desni taster Tive, crvena svetleca dioda na Sensor Kit-u trepti sa sporijim ritmom.
+
+ Ukoliko vise tastera bude pritisnuto istovremeno, treptanje dioda treba da odgovara najbrzem ritmu.*/
+int main(void)
+{
+    helper_library_init();
+
+    while (1)
+    {
+        bool button_pressed;
+        bool button1_pressed;
+        bool button2_pressed;
+        button_pressed = read_sensor_kit_button();
+        button1_pressed = read_user_switch1();
+        button2_pressed = read_user_switch2();
+        if (button_pressed && button1_pressed && button1_pressed)
+        {
+
+            turn_on_sensor_kit_led();
+            delay(50);
+            turn_off_sensor_kit_led();
+            delay(50);
+        }
+        else if (button_pressed)
+        {
+
+            turn_on_sensor_kit_led();
+
+            turn_off_sensor_kit_led();
+        }
+        else if (button1_pressed)
+        {
+            turn_on_sensor_kit_led();
+            delay(100);
+            turn_off_sensor_kit_led();
+            delay(100);
+        }
+        else if (button2_pressed)
+        {
+            turn_on_sensor_kit_led();
+            delay(2000);
+            turn_off_sensor_kit_led();
+            delay(2000);
+        }
+
+    }
+
+}

@@ -1,0 +1,132 @@
+#include "helper_library/helper.h"
+/*Napravite program koji kontrolise svetlece diode na Tivi i Sensor Kit-u. Tivi poseduje dva tastera - levi i desni, dok Sensor Kit ima jedan taster.
+
+ Program treba da obavlja sledece funkcionalnosti:
+
+ Pritiskom tastera na Sensor Kit-u, trepti  crvena svetleca dioda na Sensor Kit-u. Ako taster nije pritisnut, svetleca dioda ostaje ugasena.
+
+ Periodicno treptanje svetlece diode na Sensor Kit-u. Dioda treba da trepti u jednakim vremenskim intervalima.
+
+ U zavisnosti od stanja tastera na Tivi i Sensor Kit-u, paljenje odgovarajucih svetlecih dioda na Tivi.
+
+ Ako je pritisnut levi taster Tive, trepti crvena dioda.
+ Ako je pritisnut desni taster Tive, trepti zelena dioda.
+ Ako je pritisnut taster na Sensor Kit-u, trepti plava dioda.
+ Više svetlecih dioda moze biti upaljeno u isto vreme, u skladu sa pritiskom tastera.
+ Paljenje svih svetlecih dioda na Tivi i Sensor Kit-u ako su sva tri tastera pritisnuta. U suprotnom, sve diode ostaju ugasene.
+
+ Periodicno slanje poruke PC racunaru sa brojem pritisnutih tastera na Tivi i Sensor Kit-u. Poruka treba da sadrzi informaciju o broju pritisnutih tastera na obe platforme.
+
+ Pratiti broj pritisnutih tastera na Tivi i Sensor Kit-u i paliti odgovarajuce svetlece diode na Tivi u skladu sa brojem pritisnutih tastera.
+
+ Ako nije pritisnut nijedan taster, sve diode su ugasene.
+ Ako su pritisnuta dva tastera na Tivi, pali se zuta dioda (kombinacija crvene i zelene).
+ Ako su pritisnuta sva tri tastera, pali se bela dioda na Tivi a na Sensor Kit-u crvena.
+ Napisan program treba da obezbedi sve navedene funkcionalnosti i omoguci korisniku kontrolu svetlecih dioda na Tivi i Sensor Kit-u u skladu sa pritiskom tastera.*/
+#include "helper_library/helper.h"
+/**/
+int main(void)
+{
+    helper_library_init();
+    int broj;
+    while (1)
+    {
+        bool button_pressed;
+        bool button1_pressed;
+        bool button2_pressed;
+        button_pressed = read_sensor_kit_button();
+        button1_pressed = read_user_switch1();
+        button2_pressed = read_user_switch2();
+        broj = 0;
+        if (button_pressed && button1_pressed && button2_pressed)
+        {
+
+            turn_on_sensor_kit_led();
+            turn_on_red_led();
+            turn_on_blue_led();
+            turn_on_green_led();
+            delay(100);
+            turn_off_sensor_kit_led();
+            turn_off_red_led();
+            turn_off_blue_led();
+            turn_off_green_led();
+            broj = 3;
+            delay(100);
+
+        }
+        else if ((button1_pressed && button2_pressed) && !button_pressed)
+        {
+            turn_on_red_led();
+            turn_on_green_led();
+            delay(100);
+            turn_off_red_led();
+            turn_off_green_led();
+            broj = 2;
+            delay(100);
+
+        }
+        else if ((button_pressed && button1_pressed) && !button2_pressed)
+        {
+            turn_on_sensor_kit_led();
+            turn_on_red_led();
+            delay(100);
+            turn_off_sensor_kit_led();
+            turn_off_red_led();
+
+            broj = 2;
+            delay(100);
+
+        }
+        else if ((button_pressed && button2_pressed) && !button1_pressed)
+        {
+            turn_on_sensor_kit_led();
+            turn_on_green_led();
+            delay(100);
+            turn_off_sensor_kit_led();
+            turn_off_green_led();
+
+            broj = 2;
+            delay(100);
+
+        }
+        else if (button_pressed)
+        {
+
+            turn_on_sensor_kit_led();
+            delay(100);
+            turn_off_sensor_kit_led();
+            broj++;
+            delay(100);
+
+        }
+        else if (button1_pressed)
+        {
+            turn_on_red_led();
+            delay(100);
+            turn_off_red_led();
+            broj++;
+            delay(100);
+        }
+        else if (button2_pressed)
+        {
+            turn_on_green_led();
+            delay(100);
+            turn_off_green_led();
+            broj++;
+            delay(100);
+        }
+        else if (button_pressed)
+        {
+
+            turn_on_blue_led();
+            delay(100);
+            turn_off_blue_led();
+            broj++;
+            delay(100);
+        }
+
+        print("Broj pritisnutih tastera je: %d\n", broj);
+        delay(1000);
+    }
+
+}

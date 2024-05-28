@@ -1,0 +1,53 @@
+#include "helper_library/helper.h"
+/*Program koji periodicno trepce sve tri svetlece diode na Tivi, ali sa posebnim rezimom kada je desni taster pritisnut.
+ *  Kada je desni taster pritisnut, treptanje svih dioda postaje brze.
+ */
+int main(void)
+{
+    helper_library_init();
+
+    while (1)
+    {
+        bool right_button_pressed;
+
+        right_button_pressed = read_user_switch2();
+
+        if (right_button_pressed)
+        {
+            while (right_button_pressed)
+            {
+                turn_on_red_led();
+                delay(100);
+                turn_off_red_led();
+                delay(100);
+                turn_on_blue_led();
+                delay(100);
+                turn_off_blue_led();
+                delay(100);
+                turn_on_green_led();
+                delay(100);
+                turn_off_green_led();
+                delay(100);
+                right_button_pressed = read_user_switch2();
+            }
+        }
+        else
+        {
+
+            turn_on_red_led();
+            delay(2000);
+            turn_off_red_led();
+
+            turn_on_blue_led();
+            delay(2000);
+            turn_off_blue_led();
+
+            turn_on_green_led();
+            delay(2000);
+            turn_off_green_led();
+
+        }
+
+    }
+
+}
